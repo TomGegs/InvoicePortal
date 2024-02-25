@@ -21,10 +21,10 @@ const DashboardUI = () => {
     const hours = new Date().getHours();
     const timeOfDay =
         hours < 12
-            ? 'Have a magical Morning'
+            ? 'Have a magical morning'
             : hours < 17
-              ? 'Hope its an amazing Afternoon'
-              : 'Enjoy an excellent Evening';
+              ? "Hope it's an amazing afternoon"
+              : 'Enjoy an excellent evening';
 
     useEffect(() => {
         const fetchData = async () => {
