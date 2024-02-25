@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -25,7 +24,7 @@ import {
 } from '../../ui/table';
 
 import { DataTablePagination } from '../dataTable/data-table-pagination';
-// import { DataTableToolbar } from '../dataTable/data-table-toolbar';
+import { useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -36,12 +35,12 @@ export function DataTable<TData, TValue>({
     columns,
     data,
 }: DataTableProps<TData, TValue>) {
-    const [rowSelection, setRowSelection] = React.useState({});
-    const [columnVisibility, setColumnVisibility] =
-        React.useState<VisibilityState>({});
-    const [columnFilters, setColumnFilters] =
-        React.useState<ColumnFiltersState>([]);
-    const [sorting, setSorting] = React.useState<SortingState>([]);
+    const [rowSelection, setRowSelection] = useState({});
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
+        {}
+    );
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [sorting, setSorting] = useState<SortingState>([]);
 
     const table = useReactTable({
         data,
@@ -67,7 +66,6 @@ export function DataTable<TData, TValue>({
 
     return (
         <div className="w-full space-y-4">
-            {/* <DataTableToolbar table={table} /> */}
             <div className="rounded-md border">
                 <Table>
                     <TableHeader>
