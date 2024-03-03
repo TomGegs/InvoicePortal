@@ -1,7 +1,7 @@
 type DataType = {
     id: string;
     StartDate: string;
-    EndDate: string;
+    EndDate?: string;
     Due: string;
     Amount: number;
     File: string;
