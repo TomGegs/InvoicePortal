@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from '../../ui/dropdown-menu';
 import { Button } from '../../ui/button';
-import recovereLogo from '../../../assets/recovereLogo.png';
+import defaultLogo from '../../../assets/defaultLogo.svg';
 import { auth } from '../../../firebase/firebaseConfig';
 import { useAuth } from '../../../firebase/Auth/useAuth';
 
@@ -24,7 +24,7 @@ export function UserNav() {
                     className="relative h-8 w-8 rounded-full"
                 >
                     <Avatar className="h-9 w-9">
-                        <AvatarImage src={recovereLogo} alt="user avatar" />
+                        <AvatarImage src={defaultLogo} alt="user avatar" />
                         <AvatarFallback>INV</AvatarFallback>
                     </Avatar>
                 </Button>
