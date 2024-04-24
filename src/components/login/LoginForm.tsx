@@ -13,6 +13,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isDemoLoading, setIsDemoLoading] = useState<boolean>(false);
     const { signIn } = useAuth();
 
     const navigateToAccount = useNavigate();
@@ -21,15 +22,14 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
         event.preventDefault();
 
         // Basic validation
-        if (!username.trim()) {
-            alert('Username is required');
+        if (!username.trim() || !password.trim()) {
+            alert('Username and password are required');
             return;
         }
-        if (!password.trim()) {
-            alert('Password is required');
-            return;
-        }
+        performSignIn(username, password);
+    }
 
+    async function performSignIn(username: string, password: string) {
         setIsLoading(true);
         try {
             await signIn(username, password);
@@ -42,6 +42,22 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
             }, 1000);
         } finally {
             setIsLoading(false);
+        }
+    }
+
+    async function handleDemoLogin() {
+        setIsDemoLoading(true);
+        try {
+            await performSignIn('demo@example.com', 'password');
+            setTimeout(() => {
+                navigateToAccount('/account');
+            }, 1000);
+        } catch (error) {
+            setTimeout(() => {
+                alert('Failed to load demo portal:' + error);
+            }, 1000);
+        } finally {
+            setIsDemoLoading(false);
         }
     }
 
@@ -93,13 +109,31 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                                     className="text-white"
                                 />
                             </div>
-                            <Button disabled={isLoading}>
-                                {isLoading ? (
-                                    <div className="mr-2">Loading...</div>
-                                ) : (
-                                    'Sign In'
-                                )}
-                            </Button>
+                            <div className="flex w-full flex-row gap-x-2">
+                                <Button
+                                    disabled={isLoading || isDemoLoading}
+                                    className="w-[60%]"
+                                >
+                                    {isLoading ? (
+                                        <div className="mr-2">Loading...</div>
+                                    ) : (
+                                        'Sign In'
+                                    )}
+                                </Button>
+                                <Button
+                                    onClick={handleDemoLogin}
+                                    disabled={isLoading || isDemoLoading}
+                                    className="w-[40%]"
+                                >
+                                    {isDemoLoading ? (
+                                        <div className="mr-2">
+                                            Loading Demo...
+                                        </div>
+                                    ) : (
+                                        'Demo Portal'
+                                    )}
+                                </Button>
+                            </div>
                         </div>
                     </form>
                 </div>

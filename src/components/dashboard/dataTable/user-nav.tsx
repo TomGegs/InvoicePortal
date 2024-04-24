@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from '../../ui/dropdown-menu';
 import { Button } from '../../ui/button';
-import defaultLogo from '../../../assets/defaultLogo.svg';
+import defaultLogo from '../../../assets/defaultLogo.webp';
 import { auth } from '../../../firebase/firebaseConfig';
 import { useAuth } from '../../../firebase/Auth/useAuth';
 
@@ -23,7 +23,7 @@ export function UserNav() {
                     variant="ghost"
                     className="relative h-8 w-8 rounded-full"
                 >
-                    <Avatar className="h-9 w-9">
+                    <Avatar className="h-12 w-12">
                         <AvatarImage src={defaultLogo} alt="user avatar" />
                         <AvatarFallback>INV</AvatarFallback>
                     </Avatar>
