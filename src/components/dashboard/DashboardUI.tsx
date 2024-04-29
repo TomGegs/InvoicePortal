@@ -54,11 +54,9 @@ const DashboardUI = () => {
                     <div className="flex w-full flex-col items-center justify-center">
                         <h2 className="mt-10 text-2xl font-bold tracking-tight">
                             {timeOfDay}{' '}
-                            {
-                                (auth.currentUser?.email === 'demo@example.com')
-                                    ? '{client name}'
-                                    : capitalisedUsername
-                            }
+                            {auth.currentUser?.email === 'demo@example.com'
+                                ? '{client name}'
+                                : capitalisedUsername}
                         </h2>
                         <p className="text-muted-foreground">
                             Here's a list of your invoices
