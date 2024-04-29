@@ -14,8 +14,8 @@ type DataCardProps = {
 
 const DataCard = ({ title, data, date }: DataCardProps) => {
     return (
-        <Card className="w-1/3 text-center">
-            <CardHeader className="pb-2">
+        <Card className="w-1/3 content-center justify-center text-center">
+            <CardHeader className="pb-1">
                 <CardDescription>{title}</CardDescription>
                 <CardTitle className="text-4xl">${data}</CardTitle>
             </CardHeader>

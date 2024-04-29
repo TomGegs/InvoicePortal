@@ -17,7 +17,7 @@ export function UserNav() {
     const { signOut } = useAuth();
 
     return (
-        <header className="flex h-auto w-full place-content-end p-4 sm:static sm:px-6">
+        <nav className="flex h-auto w-full place-content-end p-4 sm:static sm:px-6">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button
@@ -45,6 +45,6 @@ export function UserNav() {
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-        </header>
+        </nav>
     );
 }

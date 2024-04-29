@@ -1,5 +1,6 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../firebase/Auth/useAuth';
+import PageLayout from '../components/layout/PageLayout';
 
 const Protected = () => {
     const { user } = useAuth();
@@ -8,7 +9,7 @@ const Protected = () => {
         return <Navigate to="/" />;
     }
 
-    return <Outlet />;
+    return <PageLayout />;
 };
 
 export default Protected;
