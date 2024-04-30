@@ -23,7 +23,7 @@ export function DataTablePagination<TData>({
     table,
 }: DataTablePaginationProps<TData>) {
     return (
-        <div className="flex items-center justify-between lg:px-2">
+        <div className="flex place-self-end justify-self-end items-center justify-between lg:px-2">
  
             <div className="flex items-center w-fit lg:space-x-8">
                 <div className="flex items-center space-x-2">
