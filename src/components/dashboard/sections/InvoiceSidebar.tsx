@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Copy, CreditCard } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Copy } from 'lucide-react';
 
 import { Button } from '../../ui/button';
 import {
@@ -16,14 +16,18 @@ import {
     PaginationItem,
 } from '../../ui/pagination';
 import { Separator } from '../../ui/separator';
+import { InvoiceData } from '../../../data/dataSchema';
 
-const InvoiceSidebar = () => {
+const InvoiceSidebar = ({ invoice }: { invoice: InvoiceData | null }) => {
+    if (!invoice) {
+        return;
+    }
     return (
-        <Card className="h-full gap-4 w-1/3 overflow-hidden md:gap-8 ">
+        <Card className="h-full w-1/3 gap-4 overflow-hidden md:gap-8 ">
             <CardHeader className="bg-muted/50 flex flex-row items-start">
                 <div className="grid gap-0.5 text-left">
                     <CardTitle className="group flex items-center gap-2 text-left text-lg">
-                        ORDER Oe31b70H
+                        Invoice ID: {invoice.id}
                         <Button
                             size="icon"
                             variant="outline"
@@ -33,16 +37,16 @@ const InvoiceSidebar = () => {
                             <span className="sr-only">Copy Order ID</span>
                         </Button>
                     </CardTitle>
+                    <CardDescription>DUE DATE: {invoice.Due}</CardDescription>
                     <CardDescription>
-                        DUE DATE: November 23, 2023
-                    </CardDescription>
-                    <CardDescription>
-                        ISSUE DATE: November 23, 2023
+                        ISSUE DATE: {invoice.IssueDate}
                     </CardDescription>
                 </div>
                 <div className="ml-auto flex items-center gap-1">
                     <Button size="sm" variant="outline" className="h-8 w-fit">
-                        Download
+                        <a target="_blank" href={invoice.File}>
+                            Download
+                        </a>
                     </Button>
                 </div>
             </CardHeader>
@@ -51,47 +55,56 @@ const InvoiceSidebar = () => {
             <CardContent className="p-6 text-sm">
                 <div className="grid gap-3">
                     <div className="font-semibold">Invoice Details</div>
-
-                    <ul className="grid-cols- grid w-full place-items-end gap-3 bg-red-400">
-                        <li className="flex grid-cols-2 place-self-start text-left">
-                            DESCRIPTION
-                        </li>
-                        <li className="flex grid-cols-1 ">HOURS</li>
-                        <li className="flex grid-cols-1">RATE / HR</li>
-                        <li className="flex w-full grid-cols-1 bg-blue-500">
-                            ITEM TOTAL
-                        </li>
-                    </ul>
-
-                    <ul className="grid w-full grid-cols-5 place-items-end items-end gap-3 bg-red-400">
-                        <li className="flex w-full grid-cols-2 place-self-start bg-black text-left">
-                            Frontend Developer
-                        </li>
-                        <li className="flex w-full grid-cols-1 bg-yellow-600 text-right">
-                            40
-                        </li>
-                        <li className="flex grid-cols-1 text-end">$45</li>
-                        <li className="flex grid-cols-1 text-end">$1800</li>
-                    </ul>
-
+                    <dl className="grid gap-3">
+                        <div className="flex items-center justify-between">
+                            <dt className="text-muted-foreground">
+                                Description
+                            </dt>
+                            <dd>{invoice.Description}</dd>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <dt className="text-muted-foreground">
+                                Date Of Work
+                            </dt>
+                            <dd>
+                                {invoice.StartDate} to {invoice.EndDate}
+                            </dd>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <dt className="text-muted-foreground">
+                                Rate per hour
+                            </dt>
+                            <dd>${invoice.RatePerHour}</dd>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <dt className="text-muted-foreground">Hours</dt>
+                            <dd>{invoice.HoursWorked}</dd>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <dt className="text-muted-foreground">
+                                Item Total
+                            </dt>
+                            <dd>${invoice.Amount}</dd>
+                        </div>
+                    </dl>
                     <Separator className="my-2" />
                     <ul className="grid gap-3">
                         <li className="flex items-center justify-between">
                             <span className="text-muted-foreground">
                                 Subtotal
                             </span>
-                            <span>$299.00</span>
+                            <span>${invoice.Amount}</span>
                         </li>
 
                         <li className="flex items-center justify-between">
                             <span className="text-muted-foreground">
                                 GST (10%)
                             </span>
-                            <span>$25.00</span>
+                            <span>${invoice.GST}</span>
                         </li>
                         <li className="flex items-center justify-between font-semibold">
                             <span className="text-muted-foreground">Total</span>
-                            <span>$329.00</span>
+                            <span>${invoice.Amount + invoice.GST}</span>
                         </li>
                     </ul>
                 </div>
@@ -117,23 +130,10 @@ const InvoiceSidebar = () => {
                         </div>
                     </dl>
                 </div>
-                <Separator className="my-4" />
-                <div className="grid gap-3">
-                    <div className="font-semibold">Payment Information</div>
-                    <dl className="grid gap-3">
-                        <div className="flex items-center justify-between">
-                            <dt className="text-muted-foreground flex items-center gap-1">
-                                <CreditCard className="h-4 w-4" />
-                                Visa
-                            </dt>
-                            <dd>**** **** **** 4532</dd>
-                        </div>
-                    </dl>
-                </div>
             </CardContent>
             <CardFooter className="bg-muted/50 flex flex-row items-center border-t px-6 py-3">
                 <div className="text-muted-foreground text-xs">
-                    Updated <time dateTime="2023-11-23">November 23, 2023</time>
+                    Thank you for your business
                 </div>
                 <Pagination className="ml-auto mr-0 w-auto">
                     <PaginationContent>
@@ -141,20 +141,22 @@ const InvoiceSidebar = () => {
                             <Button
                                 size="icon"
                                 variant="outline"
-                                className="h-6 w-6"
+                                className="h-8 w-8"
                             >
                                 <ChevronLeft className="h-3.5 w-3.5" />
-                                <span className="sr-only">Previous Order</span>
+                                <span className="sr-only">
+                                    Previous Invoice
+                                </span>
                             </Button>
                         </PaginationItem>
                         <PaginationItem>
                             <Button
                                 size="icon"
                                 variant="outline"
-                                className="h-6 w-6"
+                                className="h-8 w-8"
                             >
                                 <ChevronRight className="h-3.5 w-3.5" />
-                                <span className="sr-only">Next Order</span>
+                                <span className="sr-only">Next Invoice</span>
                             </Button>
                         </PaginationItem>
                     </PaginationContent>

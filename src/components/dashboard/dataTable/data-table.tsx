@@ -1,5 +1,3 @@
-'use client';
-
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -30,6 +28,7 @@ import {
     Card,
     CardContent,
     CardDescription,
+    CardFooter,
     CardHeader,
     CardTitle,
 } from '../../ui/card';
@@ -37,11 +36,13 @@ import {
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    onRowClick: (data: TData) => void;
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
+    onRowClick,
 }: DataTableProps<TData, TValue>) {
     const [rowSelection, setRowSelection] = useState({});
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
@@ -73,7 +74,7 @@ export function DataTable<TData, TValue>({
     });
 
     return (
-        <Card className="w-2/3">
+        <Card className="flex w-2/3 flex-col">
             <div className="grid grid-cols-4 justify-center text-center ">
                 {/* Section Headers */}
                 <CardHeader className="col-span-2 col-start-2 px-7">
@@ -122,6 +123,9 @@ export function DataTable<TData, TValue>({
                                                 row.getIsSelected() &&
                                                 'selected'
                                             }
+                                            onClick={() =>
+                                                onRowClick(row.original)
+                                            }
                                         >
                                             {row
                                                 .getVisibleCells()
@@ -151,7 +155,12 @@ export function DataTable<TData, TValue>({
                     </div>
                 </div>
             </CardContent>
-            <DataTablePagination table={table} />
+            <CardFooter className="bg-muted/50 mt-auto flex flex-row items-center border-t px-6 py-3">
+                {/* //ml-auto mr-0 w-auto */}
+                <div className="flex w-full justify-center">
+                    <DataTablePagination table={table} />
+                </div>
+            </CardFooter>
         </Card>
     );
 }

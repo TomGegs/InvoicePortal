@@ -4,6 +4,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { InvoiceData } from '../../../data/dataSchema';
 import { DataTableColumnHeader } from './data-table-column-header';
 import { ReactNode } from 'react';
+import { Badge } from '../../ui/badge';
 
 type ColumnConfig = {
     title: string;
@@ -12,10 +13,11 @@ type ColumnConfig = {
 
 const columnConfigs: ColumnConfig[] = [
     { title: 'INV#', accessor: 'id' },
-    { title: 'Start Date', accessor: 'StartDate' },
-    { title: 'Due Date', accessor: 'Due' },
-    { title: '$ Amount', accessor: 'Amount' },
-    { title: 'PDF File', accessor: 'File' },
+    { title: 'ISSUED', accessor: 'IssueDate' },
+    { title: 'DUE', accessor: 'Due' },
+    { title: 'HRS/QTY', accessor: 'HoursWorked' },
+    { title: 'AMOUNT', accessor: 'Amount' },
+    { title: 'STATUS', accessor: 'Paid' },
 ];
 
 export const columns: ColumnDef<InvoiceData>[] = columnConfigs.map(
@@ -25,34 +27,31 @@ export const columns: ColumnDef<InvoiceData>[] = columnConfigs.map(
             <DataTableColumnHeader
                 column={column}
                 title={config.title}
-                className={`max-w-[${config.accessor === 'id' ? '20px' : '70px'}] lg:max-w-[500px]`}
+                className={`  `}
             />
         ),
         cell: ({ row }) => {
             const cellValue = row.getValue(config.accessor);
-            return (
-                <div
-                    className={`flex space-x-2 text-white ${config.accessor === 'File' ? '' : 'truncate font-medium'}`}
-                    style={{
-                        maxWidth: config.accessor === 'id' ? '50px' : '70px',
-                        overflow: 'hidden',
-                    }}
-                >
-                    {config.accessor === 'File' ? (
-                        <a
-                            href={cellValue as string}
-                            download
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-300 transition-all duration-300 hover:text-blue-400 hover:underline"
-                        >
-                            Download
-                        </a>
-                    ) : (
-                        <span>{cellValue as ReactNode}</span>
-                    )}
-                </div>
-            );
+            if (config.accessor === 'Paid') {
+                // Status cell
+                return (
+                    <Badge variant={cellValue ? 'paid' : 'notPaid'}>
+                        {cellValue ? 'Paid' : 'Unpaid'}
+                    </Badge>
+                );
+            } else {
+                // All other cells
+                return (
+                    <div
+                        className={`flex space-x-2 truncate font-medium text-white`}
+                        style={{
+                            overflow: 'hidden',
+                        }}
+                    >
+                        {cellValue as ReactNode}
+                    </div>
+                );
+            }
         },
     })
 );
