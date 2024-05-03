@@ -37,11 +37,14 @@ const PaymentDetailsCard = () => {
             <CardHeader className="h-full content-center justify-center object-center text-left">
                 <CardTitle>Payment Information</CardTitle>
                 <div className="mt-10 w-full text-balance leading-relaxed ">
-                    <Separator className="my-4" />
-                    <div className="flex flex-row gap-2">
+                    <Separator className="my-2 lg:my-4" />
+                    <div className="flex flex-col gap-2 lg:flex-row">
                         {/* paymentDetails data mapped */}
                         {paymentDetails.map((detail, index) => (
-                            <div key={index} className="flex w-1/2 flex-col">
+                            <div
+                                key={index}
+                                className="flex w-full flex-col lg:w-1/2"
+                            >
                                 <CardDescription className="flex list-none flex-col">
                                     <p className="font-semibold text-white">
                                         {detail.title}

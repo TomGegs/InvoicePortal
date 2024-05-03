@@ -9,18 +9,18 @@ import {
 type DataCardProps = {
     title: string;
     data: string;
-    date: string;
+    subtitle: string;
 };
 
-const DataCard = ({ title, data, date }: DataCardProps) => {
+const DataCard = ({ title, data, subtitle }: DataCardProps) => {
     return (
-        <Card className="w-1/3 content-center justify-center text-center">
+        <Card className="w-full content-center justify-center text-center">
             <CardHeader className="pb-1">
-                <CardDescription>{title}</CardDescription>
-                <CardTitle className="text-4xl">${data}</CardTitle>
+                <CardDescription >{title}</CardDescription>
+                <CardTitle className="text-xl lg:text-4xl">${data}</CardTitle>
             </CardHeader>
             <CardContent>
-                <div className="text-muted-foreground text-xs">{date}</div>
+                <div className="text-muted-foreground text-xs">{subtitle}</div>
             </CardContent>
         </Card>
     );

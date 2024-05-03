@@ -23,7 +23,7 @@ import {
 
 import { DataTablePagination } from '../dataTable/data-table-pagination';
 import { useState } from 'react';
-import FilterButton from '../ui/FilterButton';
+// import FilterButton from '../ui/FilterButton';
 import {
     Card,
     CardContent,
@@ -36,13 +36,15 @@ import {
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    onRowClick: (data: TData) => void;
+    onRowClick: (index: number) => void;
+    selectedRowIndex: number;
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
     onRowClick,
+    selectedRowIndex,
 }: DataTableProps<TData, TValue>) {
     const [rowSelection, setRowSelection] = useState({});
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
@@ -74,7 +76,7 @@ export function DataTable<TData, TValue>({
     });
 
     return (
-        <Card className="flex w-2/3 flex-col">
+        <Card className="flex w-full lg:w-2/3 flex-col">
             <div className="grid grid-cols-4 justify-center text-center ">
                 {/* Section Headers */}
                 <CardHeader className="col-span-2 col-start-2 px-7">
@@ -84,7 +86,7 @@ export function DataTable<TData, TValue>({
                     </CardDescription>
                 </CardHeader>
                 {/* Filter and Export Buttons */}
-                <FilterButton />
+                {/* <FilterButton /> */}
             </div>
             {/* Table of Invoices */}
             <CardContent>
@@ -116,30 +118,47 @@ export function DataTable<TData, TValue>({
                             </TableHeader>
                             <TableBody>
                                 {table.getRowModel().rows?.length ? (
-                                    table.getRowModel().rows.map((row) => (
-                                        <TableRow
-                                            key={row.id}
-                                            data-state={
-                                                row.getIsSelected() &&
-                                                'selected'
-                                            }
-                                            onClick={() =>
-                                                onRowClick(row.original)
-                                            }
-                                        >
-                                            {row
-                                                .getVisibleCells()
-                                                .map((cell) => (
-                                                    <TableCell key={cell.id}>
-                                                        {flexRender(
-                                                            cell.column
-                                                                .columnDef.cell,
-                                                            cell.getContext()
-                                                        )}
-                                                    </TableCell>
-                                                ))}
-                                        </TableRow>
-                                    ))
+                                    table
+                                        .getRowModel()
+                                        .rows.map((row, index) => (
+                                            <TableRow
+                                                key={row.id}
+                                                data-state={
+                                                    index === selectedRowIndex
+                                                        ? 'selected'
+                                                        : undefined
+                                                }
+                                                onClick={() =>
+                                                    onRowClick(index)
+                                                }
+                                                className={
+                                                    index === selectedRowIndex
+                                                        ? 'bg-slate-200'
+                                                        : ''
+                                                }
+                                            >
+                                                {row
+                                                    .getVisibleCells()
+                                                    .map((cell) => (
+                                                        <TableCell
+                                                            key={cell.id}
+                                                            className={
+                                                                index ===
+                                                                selectedRowIndex
+                                                                    ? 'font-bold'
+                                                                    : 'font-normal'
+                                                            }
+                                                        >
+                                                            {flexRender(
+                                                                cell.column
+                                                                    .columnDef
+                                                                    .cell,
+                                                                cell.getContext()
+                                                            )}
+                                                        </TableCell>
+                                                    ))}
+                                            </TableRow>
+                                        ))
                                 ) : (
                                     <TableRow>
                                         <TableCell

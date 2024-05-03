@@ -16,14 +16,29 @@ import {
     PaginationItem,
 } from '../../ui/pagination';
 import { Separator } from '../../ui/separator';
+
 import { InvoiceData } from '../../../data/dataSchema';
 
-const InvoiceSidebar = ({ invoice }: { invoice: InvoiceData | null }) => {
+interface InvoiceSidebarProps {
+    invoice: InvoiceData | null;
+    onNext: () => void;
+    onPrev: () => void;
+    currentIndex: number;
+    totalInvoices: number;
+}
+
+const InvoiceSidebar = ({
+    invoice,
+    onNext,
+    onPrev,
+    currentIndex,
+    totalInvoices,
+}: InvoiceSidebarProps) => {
     if (!invoice) {
         return;
     }
     return (
-        <Card className="h-full w-1/3 gap-4 overflow-hidden md:gap-8 ">
+        <Card className="h-fit w-full gap-2 overflow-hidden md:gap-2 lg:h-full lg:w-1/3 ">
             <CardHeader className="bg-muted/50 flex flex-row items-start">
                 <div className="grid gap-0.5 text-left">
                     <CardTitle className="group flex items-center gap-2 text-left text-lg">
@@ -139,9 +154,11 @@ const InvoiceSidebar = ({ invoice }: { invoice: InvoiceData | null }) => {
                     <PaginationContent>
                         <PaginationItem>
                             <Button
+                                onClick={onPrev}
                                 size="icon"
                                 variant="outline"
                                 className="h-8 w-8"
+                                disabled={currentIndex <= 0}
                             >
                                 <ChevronLeft className="h-3.5 w-3.5" />
                                 <span className="sr-only">
@@ -151,9 +168,11 @@ const InvoiceSidebar = ({ invoice }: { invoice: InvoiceData | null }) => {
                         </PaginationItem>
                         <PaginationItem>
                             <Button
+                                onClick={onNext}
                                 size="icon"
                                 variant="outline"
                                 className="h-8 w-8"
+                                disabled={currentIndex >= totalInvoices - 1}
                             >
                                 <ChevronRight className="h-3.5 w-3.5" />
                                 <span className="sr-only">Next Invoice</span>

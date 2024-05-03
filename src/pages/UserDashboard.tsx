@@ -1,4 +1,4 @@
-import { columns } from '../components/dashboard/dataTable/columns';
+import TableColumns from '../components/dashboard/dataTable/columns';
 import { DataTable } from '../components/dashboard/dataTable/data-table';
 import InvoiceSidebar from '../components/dashboard/sections/InvoiceSidebar';
 import TopRowCards from '../components/dashboard/sections/TopRowCards';
@@ -10,33 +10,52 @@ import { useEffect, useState } from 'react';
 export function UserDashboard() {
     const invoices = useInvoices();
 
+    const [selectedInvoiceIndex, setSelectedInvoiceIndex] = useState<number>(0);
     const [selectedInvoice, setSelectedInvoice] = useState<InvoiceData | null>(
         null
     );
 
-    // Row click handler to display invoice details in the sidebar
-    const handleRowClick = (invoice: InvoiceData) => {
-        setSelectedInvoice(invoice);
+    const handleRowClick = (index: number) => {
+        setSelectedInvoiceIndex(index);
+        setSelectedInvoice(invoices[index]);
     };
 
-    // Auto select the latest invoice
     useEffect(() => {
-        if (invoices.length > 0) {
-            setSelectedInvoice(invoices[0]);
+        if (invoices.length > 0 && selectedInvoiceIndex < invoices.length) {
+            setSelectedInvoice(invoices[selectedInvoiceIndex]);
         }
-    }, [invoices]);
+    }, [invoices, selectedInvoiceIndex]);
+
+    const handleNextInvoice = () => {
+        if (selectedInvoiceIndex < invoices.length - 1) {
+            setSelectedInvoiceIndex((prev) => prev + 1);
+        }
+    };
+
+    const handlePrevInvoice = () => {
+        if (selectedInvoiceIndex > 0) {
+            setSelectedInvoiceIndex((prev) => prev - 1);
+        }
+    };
     return (
-        <div className="flex w-full flex-col  ">
+        <div className="flex h-full w-full flex-col ">
             <UserNav />
-            <main className="flex flex-col gap-4 px-4 md:gap-8 lg:px-8">
+            <main className="flex flex-col gap-2 lg:px-4">
                 <TopRowCards />
-                <div className="flex h-full flex-row gap-4 md:gap-8">
+                <div className="flex h-full flex-col-reverse gap-2 lg:flex-row">
                     <DataTable
                         data={invoices}
-                        columns={columns}
+                        columns={TableColumns()}
                         onRowClick={handleRowClick}
+                        selectedRowIndex={selectedInvoiceIndex}
                     />
-                    <InvoiceSidebar invoice={selectedInvoice} />
+                    <InvoiceSidebar
+                        invoice={selectedInvoice}
+                        onNext={handleNextInvoice}
+                        onPrev={handlePrevInvoice}
+                        currentIndex={selectedInvoiceIndex}
+                        totalInvoices={invoices.length}
+                    />{' '}
                 </div>
             </main>
         </div>

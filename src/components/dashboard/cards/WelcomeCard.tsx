@@ -18,10 +18,10 @@ const WelcomeCard = () => {
               : 'Enjoy an excellent evening';
 
     return (
-        <Card className="w-2/3">
-            <CardHeader className="h-full content-center justify-center object-center text-left">
+        <Card className="flex h-64  w-full rounded-none lg:h-full lg:w-2/3 lg:rounded-lg">
+            <CardHeader className="content-center justify-center object-center text-left lg:h-full">
                 <CardTitle>Invoice Dashboard</CardTitle>
-                <CardDescription className="mt-10 max-w-lg text-balance leading-relaxed ">
+                <CardDescription className="mt-0 max-w-lg text-balance leading-relaxed lg:mt-10 ">
                     {timeOfDay}{' '}
                     {auth.currentUser?.email === 'demo@example.com'
                         ? '{client name}'
