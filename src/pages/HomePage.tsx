@@ -24,12 +24,12 @@ const HomePage = () => {
     }, [navigate, auth]);
 
     return (
-        <div className="mx-auto flex h-fit w-fit flex-col justify-center gap-y-4 rounded-2xl border bg-[#181818] p-4  text-center font-light text-[#c2c2c2] shadow-md lg:p-20">
+        <main className="mx-auto flex h-fit w-fit flex-col justify-center gap-y-4 rounded-2xl border bg-[#181818] p-4 text-center font-light text-[#c2c2c2] shadow-md lg:p-20">
             <h1 className="text-2xl font-thin text-white">
                 Welcome to your invoice portal
             </h1>
             <LoginForm />
-        </div>
+        </main>
     );
 };
 
